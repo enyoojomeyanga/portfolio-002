@@ -1,0 +1,3 @@
+import Link from "next/link";
+export const metadata={title:"Contact"};
+export default function Contact(){return <section className="utility-page"><p className="eyebrow">Start a conversation</p><h1>Contact<span className="period">.</span></h1><p>[VERIFIED CONTACT METHOD] Provide an actual, approved address or contact channel before publishing. No fake email, form destination, telephone number, or working submission feature is supplied.</p><div className="utility-rule"><span>Engineering</span><span>Graphics Design</span><span>Business Visibility</span></div><Link href="/">← Return to all worlds</Link></section>}

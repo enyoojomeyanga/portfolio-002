@@ -1,0 +1,3 @@
+import Link from "next/link";
+export const metadata={title:"About"};
+export default function About(){return <section className="utility-page"><p className="eyebrow">The person behind the practice</p><h1>[CLIENT NAME]<span className="period">.</span></h1><p>[VERIFIED BIOGRAPHY] Introduce the client's actual experience and the connection between the three disciplines. Do not invent qualifications, employers, awards or achievements.</p><div className="utility-rule"><span>01 / Engineering</span><span>02 / Graphics Design</span><span>03 / Local Business Visibility</span></div><Link href="/">← Return to all worlds</Link></section>}

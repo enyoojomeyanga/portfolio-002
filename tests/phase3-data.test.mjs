@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+const sql=readFileSync(new URL('../supabase/migrations/20261028000100_studio_foundation.sql',import.meta.url),'utf8');
+test('migration is transaction wrapped',()=>{assert.match(sql,/^begin;/m);assert.match(sql,/commit;\s*$/);});
+test('private tables default deny',()=>{assert.equal((sql.match(/enable row level security/g)||[]).length,10);assert.match(sql,/revoke all on public.studio_administrators/);assert.doesNotMatch(sql,/create policy/i);});
+test('published records enforce immutable snapshots',()=>{assert.match(sql,/studio_versions_immutable/);assert.match(sql,/studio_placements_immutable/);assert.match(sql,/studio_shared_versions_immutable/);});
+test('content and shared publication pointers are same-owner constrained',()=>{assert.match(sql,/foreign key \(id,current_version_id\)/);assert.match(sql,/foreign key \(area,current_version_id\)/);});
+test('publication operations are idempotency-keyed',()=>{assert.equal((sql.match(/operation_id uuid not null unique/g)||[]).length,2);});
+test('no service role token embedded',()=>{assert.doesNotMatch(sql,/eyJ[a-zA-Z0-9_-]{30,}/);});

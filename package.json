@@ -1,0 +1,30 @@
+{
+  "name": "three-worlds-foundation",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test:foundation": "node --test tests/*.test.mjs",
+    "cf:preflight": "node scripts/check-cloudflare-readiness.mjs",
+    "phase1:setup-cloudflare": "node scripts/phase1-setup.mjs",
+    "phase1:verify": "node scripts/phase1-verify.mjs",
+    "test:routes": "node scripts/smoke-routes.mjs",
+    "test:phase4": "node --test tests/phase4-auth.test.mjs"
+  },
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "@supabase/ssr": "^0.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  }
+}

@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, existsSync } from 'node:fs';
+const root=new URL('../', import.meta.url);
+const read=p=>readFileSync(new URL(p,root),'utf8');
+test('three world pages exist',()=>{for(const w of ['engineering','graphics','visibility'])assert.ok(existsSync(new URL(`src/app/${w}/page.tsx`,root)))});
+test('all sample content explicitly marked as placeholders',()=>{const c=read('src/lib/content.ts');assert.match(c,/\[CLIENT NAME\]/);assert.match(c,/\[CLIENT PROJECTS\]/);assert.match(c,/\[CLIENT ARTWORK\]/);assert.match(c,/\[CONFIRMED SERVICES\]/)});
+test('studio fails closed without auth',()=>assert.match(read('src/app/studio/page.tsx'),/notFound\(\)/));
+test('draft content is not embedded in health endpoint',()=>{const c=read('src/app/api/health/route.ts');assert.doesNotMatch(c,/secret|draft|email/i);assert.match(c,/no-store/)});
+test('source ignores environment secrets',()=>assert.match(read('.gitignore'),/^\.env$/m));
+test('no deployment or provisioning scripts',()=>{const p=JSON.parse(read('package.json'));assert.ok(!p.scripts.deploy);assert.ok(!p.scripts.migrate)});

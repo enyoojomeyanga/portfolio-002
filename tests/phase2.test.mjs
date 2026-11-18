@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, existsSync } from 'node:fs';
+const root=new URL('../',import.meta.url);
+const read=p=>readFileSync(new URL(p,root),'utf8');
+test('public routes include all approved worlds plus about and contact',()=>{for(const p of ['engineering','graphics','visibility','about','contact'])assert.ok(existsSync(new URL(`src/app/${p}/page.tsx`,root)))});
+test('public pages avoid fabricated case study outcomes and real client identity',()=>{assert.match(read('src/lib/content.ts'),/\[CLIENT NAME\]/);for(const p of ['engineering','graphics','visibility','about','contact'])assert.match(read(`src/app/${p}/page.tsx`),/\[/)});
+test('not-yet-authorized private studio stays closed',()=>assert.match(read('src/app/studio/page.tsx'),/notFound\(\)/));
+test('search engines cannot index this placeholder prototype',()=>assert.match(read('src/app/layout.tsx'),/index: false/));
+test('mobile menu, focus and reduced motion styles provided',()=>{const css=read('src/app/globals.css');for(const term of ['.mobile-navigation','focus-visible','prefers-reduced-motion'])assert.ok(css.includes(term))});
